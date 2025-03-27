@@ -19,13 +19,13 @@ export default function ImageViewer({
   activeCommentId,
 }: ImageViewerProps) {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full flex items-center justify-center ">
       <div className="relative" onClick={onClick}>
         <img
           ref={imageRef}
           src={imageUrl}
           alt=""
-          className="max-h-[80vh] max-w-full object-contain "
+          className="max-h-[80vh] max-w-full object-contain cursor-pointer"
         />
         {/* Render comment markers */}
         {comments.map((comment) => (

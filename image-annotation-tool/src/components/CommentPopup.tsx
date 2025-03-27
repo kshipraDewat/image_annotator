@@ -54,10 +54,16 @@ export default function CommentPopup({
           onChange={(e) => setContent(e.target.value)}
         />
         <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose}>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="cursor-pointer"
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>Save</Button>
+          <Button onClick={handleSubmit} className="cursor-pointer">
+            Save
+          </Button>
         </div>
       </div>
     </div>

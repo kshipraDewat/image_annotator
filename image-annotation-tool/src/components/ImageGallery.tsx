@@ -177,13 +177,14 @@ export default function ImageGallery() {
               <div className="p-4 flex justify-between border">
                 <div className="flex gap-2 items-center">
                   <FaImage className="text-yellow-600" />
-                  <h3 className="font-medium text-gray-900 truncate w-[50%]">
-                    {image.name}
+                  <h3 className="font-medium text-gray-900 w-[50%]">
+                    {image.name.slice(0, 10)}
+                    {image.name.length > 10 && "..."}
                   </h3>
                 </div>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" className=" ">
+                    <Button variant="ghost" className="cursor-pointer">
                       <PiDotsThreeBold />
                     </Button>
                   </PopoverTrigger>
@@ -191,14 +192,14 @@ export default function ImageGallery() {
                     <div className="flex flex-col gap-2">
                       <Button
                         variant="ghost"
-                        className="justify-start"
+                        className="justify-start cursor-pointer"
                         onClick={() => handleRename(image.id)}
                       >
                         Rename
                       </Button>
                       <Button
                         variant="ghost"
-                        className="justify-start"
+                        className="justify-start cursor-pointer"
                         onClick={() => handleDownload(image.url, image.name)}
                       >
                         Download File
@@ -229,14 +230,14 @@ export default function ImageGallery() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="rounded-full bg-black/20 text-white cursor-pointer"
               >
                 <CiCrop />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="rounded-full bg-black/20 text-white cursor-pointer"
               >
                 <GoPencil />
               </Button>
@@ -244,7 +245,7 @@ export default function ImageGallery() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="rounded-full bg-black/20 text-white cursor-pointer"
               >
                 <MdOutlineAddComment />
               </Button>
@@ -252,14 +253,14 @@ export default function ImageGallery() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="rounded-full bg-black/20 text-white cursor-pointer"
               >
                 <MdOutlineFileDownload />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="rounded-full bg-black/20 text-white cursor-pointer"
                 onClick={closeDialog}
               >
                 <X className="h-4 w-4" />
