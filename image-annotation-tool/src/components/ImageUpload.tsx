@@ -1,25 +1,34 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react";
+import { useStore } from "../store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-interface ImageUploadProps {
-  onUpload: (file: File) => void;
-}
+export default function ImageUpload() {
+  const { addImage } = useStore();
+  const navigate = useNavigate();
 
-export default function ImageUpload({ onUpload }: ImageUploadProps) {
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onUpload(file);
-      e.target.value = ''; 
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        addImage(event.target?.result as string, file.name);
+        navigate("/collection"); // Redirect to gallery after upload
+        toast.success("image uploaded sucessfully!");
+      };
+      reader.readAsDataURL(file);
+      e.target.value = ""; // Reset input
     }
   };
 
   return (
-    <label className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700">
+    <label className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition-colors">
       <input
         type="file"
         className="hidden"
         accept="image/*"
         onChange={handleFileChange}
+        multiple
       />
       Upload Image
     </label>
