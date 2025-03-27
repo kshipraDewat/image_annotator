@@ -9,6 +9,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import ImageViewer from "./ImageViewer";
 import CommentPopup from "./CommentPopup";
 import CommentsSidebar from "./CommentsSidebar";
+import { PiDotsThreeBold } from "react-icons/pi";
 
 export default function ImageGallery() {
   const {
@@ -112,25 +113,25 @@ export default function ImageGallery() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {images.map((image, index) => (
-            <div
-              key={image.id}
-              className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => handleImageClick(index)}
-            >
-              <div className="h-48 overflow-hidden">
+            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="p-4 flex justify-between border">
+                <h3 className="font-medium text-gray-900 truncate w-[50%]">
+                  {image.name}
+                </h3>
+                <Button variant="ghost" className=" ">
+                  <PiDotsThreeBold />
+                </Button>
+              </div>
+              <div
+                className="h-48 overflow-hidden"
+                key={image.id}
+                onClick={() => handleImageClick(index)}
+              >
                 <img
                   src={image.thumbnail || image.url}
                   alt={image.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover "
                 />
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium text-gray-900 truncate">
-                  {image.name}
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  {new Date(parseInt(image.id)).toLocaleDateString()}
-                </p>
               </div>
             </div>
           ))}
@@ -173,8 +174,8 @@ export default function ImageGallery() {
             </div>
           </DialogHeader>
           {selectedImageIndex !== null && (
-            <div className="relative h-full flex items-center justify-center bg-gray-700">
-              <div className="w-full h-full flex items-center justify-center">
+            <div className="relative h-screen flex items-center justify-center bg-gray-700">
+              <div className="w-full h-full flex ">
                 <div className="flex gap-5 w-full h-full">
                   <ImageViewer
                     imageRef={imageRef}

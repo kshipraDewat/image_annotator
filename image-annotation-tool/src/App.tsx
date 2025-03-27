@@ -26,7 +26,6 @@ function App() {
           </div>
         }
       />
-      <Route path="/annotate/:imageId" element={<AnnotationView />} />
       <Route path="/collection" element={<Collection />} />
     </Routes>
   );
