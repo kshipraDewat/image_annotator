@@ -147,8 +147,7 @@ export default function ImageGallery() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Image Gallery</h1>
+      <div className="flex justify-end items-center mb-6">
         <div className="flex items-center gap-4">
           <Input
             type="text"
@@ -170,9 +169,9 @@ export default function ImageGallery() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredImages.map((image, index) => (
+          {filteredImages?.map((image, index) => (
             <div
-              className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer rounded-md"
               key={image.id}
             >
               <div className="p-4 flex justify-between border">
@@ -224,7 +223,7 @@ export default function ImageGallery() {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-screen h-screen max-w-none max-h-none p-0">
+        <DialogContent className="w-screen h-screen max-w-screen max-h-screen p-0">
           <DialogHeader className="bg-black flex z-10 p-4 w-full h-fit">
             <div className="flex gap-3 justify-end">
               <Button
@@ -268,7 +267,7 @@ export default function ImageGallery() {
             </div>
           </DialogHeader>
           {selectedImageIndex !== null && (
-            <div className="relative h-screen flex items-center justify-center bg-gray-700">
+            <div className="relative h-screen flex items-center justify-center bg-gray-800">
               <div className="w-full h-full flex ">
                 <div className="flex gap-5 w-full h-full">
                   <ImageViewer
@@ -303,7 +302,7 @@ export default function ImageGallery() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="absolute left-20 rounded-full bg-black/20 hover:bg-black/40 text-white"
                 onClick={handlePrevious}
               >
                 <ChevronLeft className="h-6 w-6" />
@@ -312,7 +311,7 @@ export default function ImageGallery() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 rounded-full bg-black/20 hover:bg-black/40 text-white"
+                className="absolute right-20 rounded-full bg-black/20 hover:bg-black/40 text-white"
                 onClick={handleNext}
               >
                 <ChevronRight className="h-6 w-6" />
