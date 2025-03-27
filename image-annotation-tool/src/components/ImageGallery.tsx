@@ -5,11 +5,16 @@ import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { CiCrop } from "react-icons/ci";
 import { GoPencil } from "react-icons/go";
-import { MdOutlineFileDownload } from "react-icons/md";
+import { MdOutlineAddComment, MdOutlineFileDownload } from "react-icons/md";
 import ImageViewer from "./ImageViewer";
 import CommentPopup from "./CommentPopup";
 import CommentsSidebar from "./CommentsSidebar";
 import { PiDotsThreeBold } from "react-icons/pi";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function ImageGallery() {
   const {
@@ -98,9 +103,28 @@ export default function ImageGallery() {
   const handleAddReply = (content: string) => {
     if (!activeCommentId) return;
     addReply(activeCommentId, {
-      author: "User", // You might want to get this from user input
+      author: "User",
       content,
     });
+  };
+
+  // Function to handle rename action
+  const handleRename = (imageId: string) => {
+    const newName = prompt("Enter new name for the image:");
+    if (newName) {
+      // Logic to rename the image (e.g., update the store or make an API call)
+      console.log(`Renaming image ${imageId} to ${newName}`);
+    }
+  };
+
+  // Function to handle download action
+  const handleDownload = (imageUrl: string, imageName: string) => {
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.download = imageName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -113,24 +137,48 @@ export default function ImageGallery() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {images.map((image, index) => (
-            <div className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+            <div
+              className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+              key={image.id}
+            >
               <div className="p-4 flex justify-between border">
                 <h3 className="font-medium text-gray-900 truncate w-[50%]">
                   {image.name}
                 </h3>
-                <Button variant="ghost" className=" ">
-                  <PiDotsThreeBold />
-                </Button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="ghost" className=" ">
+                      <PiDotsThreeBold />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-40">
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => handleRename(image.id)}
+                      >
+                        Rename
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => handleDownload(image.url, image.name)}
+                      >
+                        Download File
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
               <div
                 className="h-48 overflow-hidden"
-                key={image.id}
                 onClick={() => handleImageClick(index)}
               >
                 <img
                   src={image.thumbnail || image.url}
                   alt={image.name}
-                  className="w-full h-full object-cover "
+                  className="w-full h-full object-cover transition duration-300 ease-in-out hover:scale-110 "
                 />
               </div>
             </div>
@@ -156,6 +204,15 @@ export default function ImageGallery() {
               >
                 <GoPencil />
               </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-black/20 hover:bg-black/40 text-white"
+              >
+                <MdOutlineAddComment />
+              </Button>
+
               <Button
                 variant="ghost"
                 size="icon"
