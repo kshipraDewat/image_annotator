@@ -2,6 +2,7 @@ import { ChangeEvent } from "react";
 import { useStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { MdOutlineFileUpload } from "react-icons/md";
 
 export default function ImageUpload() {
   const { addImage } = useStore();
@@ -14,7 +15,7 @@ export default function ImageUpload() {
       reader.onload = (event) => {
         addImage(event.target?.result as string, file.name);
         navigate("/collection"); // Redirect to gallery after upload
-        toast.success("image uploaded sucessfully!");
+        toast.success("Image Uploaded Sucessfully!");
       };
       reader.readAsDataURL(file);
       e.target.value = ""; // Reset input
@@ -30,6 +31,7 @@ export default function ImageUpload() {
         onChange={handleFileChange}
         multiple
       />
+      <MdOutlineFileUpload className="mr-2" />
       Upload Image
     </label>
   );

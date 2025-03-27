@@ -15,6 +15,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { FaImage } from "react-icons/fa6";
+import { Input } from "@/components/ui/input";
 
 export default function ImageGallery() {
   const {
@@ -36,9 +38,26 @@ export default function ImageGallery() {
     x: number;
     y: number;
   } | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredImages, setFilteredImages] = useState(images);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  // Get comments for the current image
+  // Debouncing logic
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      if (searchQuery.trim() === "") {
+        setFilteredImages(images);
+      } else {
+        const filtered = images.filter((image) =>
+          image.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredImages(filtered);
+      }
+    }, 300);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [searchQuery, images]);
+
   const currentImageComments = comments.filter(
     (comment) =>
       comment.imageId ===
@@ -112,7 +131,6 @@ export default function ImageGallery() {
   const handleRename = (imageId: string) => {
     const newName = prompt("Enter new name for the image:");
     if (newName) {
-      // Logic to rename the image (e.g., update the store or make an API call)
       console.log(`Renaming image ${imageId} to ${newName}`);
     }
   };
@@ -129,22 +147,41 @@ export default function ImageGallery() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Image Gallery</h1>
-      {images.length === 0 ? (
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Image Gallery</h1>
+        <div className="flex items-center gap-4">
+          <Input
+            type="text"
+            placeholder="Search images"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-64"
+          />
+        </div>
+      </div>
+
+      {filteredImages.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 mb-4">No images uploaded yet</p>
+          <p className="text-gray-500 mb-4">
+            {searchQuery
+              ? "No images match your search"
+              : "No images uploaded yet"}
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {images.map((image, index) => (
+          {filteredImages.map((image, index) => (
             <div
               className="bg-white overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
               key={image.id}
             >
               <div className="p-4 flex justify-between border">
-                <h3 className="font-medium text-gray-900 truncate w-[50%]">
-                  {image.name}
-                </h3>
+                <div className="flex gap-2 items-center">
+                  <FaImage className="text-yellow-600" />
+                  <h3 className="font-medium text-gray-900 truncate w-[50%]">
+                    {image.name}
+                  </h3>
+                </div>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="ghost" className=" ">
